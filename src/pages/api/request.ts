@@ -1,5 +1,7 @@
 import { OpenAiService } from "./openai/openai.service";
 import { CreateCompletionRequestBody } from "./openai/models/request/createCompletionRequestBody";
+import { CreateChatCompletionRequestBody } from "./openai/models/request/createChatCompletionRequestBody";
+import { RoleType } from "./openai/models/elements/messageElement";
 
 enum PromptType {
   travelGuide,
@@ -10,19 +12,22 @@ enum PromptType {
 }
 
 export async function run(input: string, type: PromptType) {
-  const request: CreateCompletionRequestBody = {
-    model: "text-davinci-003",
-    prompt: mergeInputWithPrompt(input, type),
+  const request: CreateChatCompletionRequestBody = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: RoleType.SYSTEM, content: mergeInputWithPrompt(input, type) },
+    ],
     temperature: 0.8,
     top_p: 0.5,
-    max_tokens: 250,
-    n: 5,
+    max_tokens: 2000,
   };
 
   try {
-    const response = await OpenAiService.createCompletion(request);
+    const response = await OpenAiService.createChatCompletion(request);
 
-    return response?.choices.map((choice) => choice.text);
+    console.log(JSON.stringify(response));
+
+    return response?.choices[0].message.content.split("\n\n");
   } catch (error) {
     console.log(JSON.stringify(error));
   }

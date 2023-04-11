@@ -1,4 +1,4 @@
-import { ChoiceElement } from "../elements/choiceElement";
+import { CompletionChoiceElement } from "../elements/completionChoiceElement";
 import { UsageElement } from "../elements/usageElement";
 
 export interface CreateCompletionResponse {
@@ -6,6 +6,6 @@ export interface CreateCompletionResponse {
   object: string;
   created: Number;
   model: string;
-  choices: ChoiceElement[];
+  choices: CompletionChoiceElement[];
   usage: UsageElement;
 }

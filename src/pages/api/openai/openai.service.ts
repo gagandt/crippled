@@ -3,6 +3,8 @@ import { CreateCompletionRequestBody } from "./models/request/createCompletionRe
 import { CreateFineTuneRequestBody } from "./models/request/createFineTuneRequestBody";
 import { UploadFileRequestBody } from "./models/request/uploadFileRequestBody";
 import { CreateCompletionResponse } from "./models/response/createCompletionResponse";
+import { CreateChatCompletionRequestBody } from "./models/request/createChatCompletionRequestBody";
+import { CreateChatCompletionResponse } from "./models/response/createChatCompletionResponse";
 
 export class OpenAiService {
   private static DOMAIN = "https://api.openai.com/v1";
@@ -20,6 +22,21 @@ export class OpenAiService {
     });
 
     return result.data as CreateCompletionResponse;
+  }
+
+  public static async createChatCompletion(
+    body: CreateChatCompletionRequestBody
+  ): Promise<CreateChatCompletionResponse> {
+    const result = await axios({
+      method: "post",
+      url: `${this.DOMAIN}/chat/completions`,
+      data: body,
+      headers: this.getHeaders({
+        "Content-Type": "application/json",
+      }),
+    });
+
+    return result.data as CreateChatCompletionResponse;
   }
 
   public static async uploadFile(
@@ -64,7 +81,7 @@ export class OpenAiService {
 
   private static getHeaders(customHeaders?: any): any {
     return {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      Authorization: `Bearer <API_KEY_GOES_HERE>`,
       ...customHeaders,
     };
   }
