@@ -13,15 +13,16 @@ export async function run(input: string, type: PromptType) {
   const request: CreateCompletionRequestBody = {
     model: "text-davinci-003",
     prompt: mergeInputWithPrompt(input, type),
-    temperature: 0,
-    top_p: 0,
-    max_tokens: 100,
+    temperature: 0.8,
+    top_p: 0.5,
+    max_tokens: 250,
+    n: 5,
   };
 
   try {
     const response = await OpenAiService.createCompletion(request);
 
-    return response?.choices[0]?.text;
+    return response?.choices.map((choice) => choice.text);
   } catch (error) {
     console.log(JSON.stringify(error));
   }

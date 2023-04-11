@@ -5,6 +5,7 @@ export default function Home() {
   const [promptsSelection, setPromptsSelection] = useState([true, false, false, false, false]);
   const [threads, setThreads] = useState([""]);
   const [isLoading, setIsLoading] = useState(false);
+  const [blog, setBlog] = useState<string[]>([]);
 
   const setAllThreads = (value: string, index: number) => {
     setThreads(threads.map((t, i) => (i === index ? value : t)));
@@ -26,8 +27,8 @@ export default function Home() {
     setIsLoading(true);
     const response = await run(allContent, promptIndex);
 
-    console.log(response);
     setIsLoading(false);
+    setBlog(response ?? []);
   };
 
   return (
@@ -272,6 +273,28 @@ export default function Home() {
           </span>
         </div>
       </div>
+
+      {!!blog.length && (
+        <div className="z-10 w-full pt-16 max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+          <div className="fixed bottom-0 pl-1 left-0 flex h-48 w-full justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
+            Here is your blog
+          </div>
+        </div>
+      )}
+
+      {!!blog.length && (
+        <div className="z-10 w-full pt-4 max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+          <p className="fixed flex flex-col left-0 top-0 w-full justify-center border border-gray-500 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:bg-gray-100 lg:p-4 lg:dark:bg-zinc-800">
+            {blog.map((b, i) => {
+              return (
+                <span key={"blog" + i} className="flex w-full">
+                  {b} {"\n\n"}
+                </span>
+              );
+            })}
+          </p>
+        </div>
+      )}
     </main>
   );
 }

@@ -4,4 +4,5 @@ export interface CreateCompletionRequestBody {
   max_tokens?: Number;
   temperature?: Number;
   top_p?: Number;
+  n?: Number;
 }
