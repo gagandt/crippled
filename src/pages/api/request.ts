@@ -25,8 +25,6 @@ export async function run(input: string, type: PromptType) {
   try {
     const response = await OpenAiService.createChatCompletion(request);
 
-    console.log(JSON.stringify(response));
-
     return response?.choices[0].message.content.split("\n\n");
   } catch (error) {
     console.log(JSON.stringify(error));
