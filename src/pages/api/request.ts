@@ -9,18 +9,19 @@ enum PromptType {
   socialMediaManager,
 }
 
-async function run(input: string, type: PromptType) {
+export async function run(input: string, type: PromptType) {
   const request: CreateCompletionRequestBody = {
     model: "text-davinci-003",
     prompt: mergeInputWithPrompt(input, type),
     temperature: 0,
     top_p: 0,
+    max_tokens: 100,
   };
 
   try {
     const response = await OpenAiService.createCompletion(request);
 
-    console.log(response);
+    return response?.choices[0]?.text;
   } catch (error) {
     console.log(JSON.stringify(error));
   }
